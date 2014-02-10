@@ -1,0 +1,39 @@
+<!--Use servlet 3.0 specification-->
+<web-app
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        id="WebApp_ID" version="3.0">
+
+    <!-- ContextLoaderListener will tie beans from config files with servlet context -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:persistenceConfig/spring-jdbctemplate.xml
+            classpath:persistenceConfig/spring-hibernate.xml
+        </param-value>
+    </context-param>
+
+    <!-- Context loader listener is used to tie application context with servlet context. It creates root web application
+     context from where it is possible to reference all spring managed beans -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- Create dispatcher servlet and set config file with related beans -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springmvc-servlet-eap.xml</param-value>
+        </init-param>
+    </servlet>
+
+    <!-- "springmvc" dispatcher servlet will handle all requests based on /servlet/ url -->
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/servlet/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
